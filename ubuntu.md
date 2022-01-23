@@ -88,6 +88,18 @@
 **pip**
 1. 安装pip```sudo apt-get install python3-pip```
 2. 更新```sudo pip3 install --upgrade pip```
+3. 软连接```sudo ln -s /usr/bin/pip3 /usr/bin/pip```
+4. 换源，新建```mkdir ~/.pip/```编辑```sudo gedit ./.pip/pip.conf```
+5. 写入
+    ```
+    [global]
+    index-url=https://pypi.tuna.tsinghua.edu.cn/simple
+    [install]
+    trusted-host=mirrors.aliyun.com
+    ```
+6. 查看当前源```pip config list```
+7. 更新```sudo pip install --upgrade pip```
+
 ### 软件
 * 搜狗输入法 [官方教程](https://pinyin.sogou.com/linux/help.php)
 * deepin [官方教程](https://github.com/zq1997/deepin-wine#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
