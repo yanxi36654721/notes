@@ -51,10 +51,33 @@
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security universe
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security multiverse
     ```
-4. sudo apt update
-5. sudo apt upgrade
+4. 更新源```sudo apt update```
+5. 更新软件```sudo apt upgrade```
+
+**图形化页面root用户登录**
+1. ```sudo gedit /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf```
+2. 修改内容   
+    ```
+    [Seat:*]
+    user-session=ubuntu
+    greeter-show-manual-login= true
+    all-guest=false #这个可以 不用配置
+    ```
+3. ```sudo gedit /etc/pam.d/gdm-autologin```注释掉```auth required pam_succeed_if.so user != root quiet_success```
+4. ```sudo gedit /etc/pam.d/gdm-password```注释掉```auth required pam_succeed_if.so user != root quiet_success```
+5. ```sudo gedit /root/.profile```
+6. ```
+    # ~/.profile: executed by Bourne-compatible login shells.
+    if [ "$BASH" ]; then
+        if [ -f ~/.bashrc ]; then
+            . ~/.bashrc
+        fi
+    fi
+    tty -s && mesg n || true
+    mesg n || true
+   ```
+
 ### 软件
 * 搜狗输入法 [官方教程](https://pinyin.sogou.com/linux/help.php)
-* 
 ## 使用
-gedit
+gedit 自带编辑器
