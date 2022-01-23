@@ -77,7 +77,19 @@
     mesg n || true
    ```
 
+**JDK**
+1. 安装```sudo apt install openjdk-11-jdk```
+2. 验证```java -version```
+3. 查看安装路径```sudo update-alternatives --config java```
+4. ```sudo gedit /etc/environment```添加```JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"```在最后一行
+5. 重新配置```source /etc/environment```
+6. 验证```echo $JAVA_HOME```
+
+**pip**
+1. 安装pip```sudo apt-get install python3-pip```
+2. 更新```sudo pip3 install --upgrade pip```
 ### 软件
 * 搜狗输入法 [官方教程](https://pinyin.sogou.com/linux/help.php)
+* deepin [官方教程](https://github.com/zq1997/deepin-wine#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
 ## 使用
 gedit 自带编辑器
