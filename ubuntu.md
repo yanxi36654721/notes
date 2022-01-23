@@ -95,7 +95,7 @@
     [global]
     index-url=https://pypi.tuna.tsinghua.edu.cn/simple
     [install]
-    trusted-host=mirrors.aliyun.com
+    trusted-host=pypi.tuna.tsinghua.edu.cn
     ```
 6. 查看当前源```pip config list```
 7. 更新```sudo pip install --upgrade pip```
