@@ -123,7 +123,8 @@ chmod 0600 ~/.ssh/authorized_keys
     <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_HOME,PATH,LANG,TZ,HADOOP_MAPRED_HOME</value>
 </property>
 ```
-3.启动`sbin/start-yarn.sh`
+3. 启动`sbin/start-yarn.sh`
+4. 访问外网地址:8088
 
 ### 注意：服务器关机前请关闭hdfs和yarn
 ```
