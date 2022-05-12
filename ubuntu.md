@@ -33,12 +33,12 @@
 **设置root用户密码**
 1. ```sudo passwd root```
 2. 输入密码，回车，重复
-3. ```sudo gedit /etc/ssh/sshd_config```
+3. ```vi /etc/ssh/sshd_config```
 4. 找到`#Authentication`，将`PermitRootLogin`参数和`PasswordAuthentication`参数修改为`yes`,去掉注释`#`，保存文件。  
 
 **换源**
 1. 备份```sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak```
-2. ```sudo gedit /etc/apt/sources.list```
+2. ```vi /etc/apt/sources.list```
 3. ```
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted
@@ -55,7 +55,7 @@
 5. 更新软件```sudo apt upgrade```
 
 **图形化页面root用户登录**
-1. ```sudo gedit /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf```
+1. ```vi /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf```
 2. 修改内容   
     ```
     [Seat:*]
@@ -63,9 +63,9 @@
     greeter-show-manual-login= true
     all-guest=false #这个可以 不用配置
     ```
-3. ```sudo gedit /etc/pam.d/gdm-autologin```注释掉```auth required pam_succeed_if.so user != root quiet_success```
-4. ```sudo gedit /etc/pam.d/gdm-password```注释掉```auth required pam_succeed_if.so user != root quiet_success```
-5. ```sudo gedit /root/.profile```
+3. ```vi /etc/pam.d/gdm-autologin```注释掉```auth required pam_succeed_if.so user != root quiet_success```
+4. ```vi /etc/pam.d/gdm-password```注释掉```auth required pam_succeed_if.so user != root quiet_success```
+5. ```vi /root/.profile```
 6. ```
     # ~/.profile: executed by Bourne-compatible login shells.
     if [ "$BASH" ]; then
@@ -81,7 +81,7 @@
 1. 安装```sudo apt install openjdk-11-jdk```
 2. 验证```java -version```
 3. 查看安装路径```sudo update-alternatives --config java```
-4. ```sudo gedit /etc/environment```添加```JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"```在最后一行
+4. ```vi /etc/environment```添加```JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"```在最后一行
 5. 重新配置```source /etc/environment```
 6. 验证```echo $JAVA_HOME```
 
@@ -89,7 +89,7 @@
 1. 安装pip```sudo apt-get install python3-pip```
 2. 更新```sudo pip3 install --upgrade pip```
 3. 软连接```sudo ln -s /usr/bin/pip3 /usr/bin/pip```
-4. 换源，新建```mkdir ~/.pip/```编辑```sudo gedit ./.pip/pip.conf```
+4. 换源，新建```mkdir ~/.pip/```编辑```vi ./.pip/pip.conf```
 5. 写入
     ```
     [global]
@@ -103,5 +103,3 @@
 ### 软件
 * 搜狗输入法 [官方教程](https://pinyin.sogou.com/linux/help.php)
 * deepin [官方教程](https://github.com/zq1997/deepin-wine#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
-## 使用
-gedit 自带编辑器
