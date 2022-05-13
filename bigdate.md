@@ -53,7 +53,7 @@ password：xxxxxxxx
 6. 验证`echo $JAVA_HOME`
 
 **PIP**
-1. 安装`pipsudo apt-get install python3-pip`
+1. 安装`sudo apt-get install python3-pip`
 2. 新建`mkdir ~/.pip/`，编辑`vi ./.pip/pip.conf`写入以下内容
 ```
 [global]
@@ -98,7 +98,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 0600 ~/.ssh/authorized_keys
 ```
 10. 格式化HDSF`bin/hdfs namenode -format`
-11. 启用进程守护`sbin/start-dfs.sh`
+11. 启用hdfs进程`sbin/start-dfs.sh`
 
 **配置YARN**
 1. 编辑`vi etc/hadoop/mapred-site.xml`，找到`<configuration>` `</configuration>`在中间插入
