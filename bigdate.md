@@ -71,7 +71,7 @@ sudo apt-get install ssh
 sudo apt-get install pdsh
 ```
 **安装**
-1. 下载安装包`wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.2.3/hadoop-3.2.3.tar.gz -p /opt/ -o hadoop`
+1. 下载安装包`wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.2.3/hadoop-3.2.3.tar.gz`
 2. 解压`tar -zxvf /opt/hadoop-3.2.3.tar.gz`
 3. `cd /opt/hadoop/`
 4. `vi etc/hadoop/hadoop-env.sh`
