@@ -5,16 +5,17 @@
 3. hadoop3.2.3
 ### 环境安装
 
-**设置root用户**
+**设置root用户密码**
 1. `sudo passwd root`
 2. 输入密码，重复密码
-3. `vi /etc/ssh/sshd_config`
-4. 找到`PermitRootLogin`参数（约34行）和`PasswordAuthentication`参数（约58行）修改值为`yes`,去掉注释`#`。
-5. 按`Esc`，输入`:wq`，保存退出
+3. 切换root用户`su root`
+4. `vi /etc/ssh/sshd_config`
+5. 找到`PermitRootLogin`参数（约34行）和`PasswordAuthentication`参数（约58行）修改值为`yes`,去掉注释`#`。
+6. 按`Esc`，输入`:wq`，保存退出
 
 **换源**
 1. 备份`sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak`
-2. 编辑`vi /etc/apt/sources.list`
+2. 编辑`vi /etc/apt/sources.list`，全部换为以下内容
 3. ```
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted
     deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted
@@ -29,6 +30,7 @@
    ```
 4. 更新源`sudo apt update`
 5. 更新软件`sudo apt upgrade`
+6. 其中会显示图形化选择页面，使用上下键选择第一个回车。
 
 **宝塔面板**
 1. 安装`wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh ed8484bec`
@@ -43,6 +45,8 @@ username：xxxxxxxx
 password：xxxxxxxx
 ```
 3. 使用浏览器访问外网面板地址，输入账号密码登录
+4. 点击注册账号，注册完成后回到页面绑定刚才注册的账号密码。
+5. 点击右侧终端，账户名输入`root`输入密码，确定
 
 **JDK**
 1. 安装`sudo apt install openjdk-11-jdk`
@@ -72,11 +76,12 @@ sudo apt-get install pdsh
 ```
 **安装**
 1. 下载安装包`wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.2.3/hadoop-3.2.3.tar.gz`
-2. 解压`tar -zxvf /opt/hadoop-3.2.3.tar.gz`
-3. `cd /opt/hadoop/`
-4. `vi etc/hadoop/hadoop-env.sh`
-5. 在文件最前插入一行`export JAVA_HOME=/usr/java/latest`
-6. 编辑`vi etc/hadoop/core-site.xml`，找到`<configuration>` `</configuration>`在中间插入
+2. 进入到下载的目录，一般为/root/`cd /root/`
+3. 解压`tar -zxvf /opt/hadoop-3.2.3.tar.gz`
+4. `cd /opt/hadoop/`
+5. `vi etc/hadoop/hadoop-env.sh`
+6. 在文件最前插入一行`export JAVA_HOME=/usr/java/latest`
+7. 编辑`vi etc/hadoop/core-site.xml`，找到`<configuration>` `</configuration>`在中间插入
 ```
 <property>
     <name>fs.defaultFS</name>
