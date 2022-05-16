@@ -58,7 +58,7 @@ password：xxxxxxxx
 
 **PIP**
 1. 安装`sudo apt-get install python3-pip`
-2. 新建`mkdir ~/.pip/`，编辑`vi ./.pip/pip.conf`写入以下内容
+2. 编辑`vi /root/.pip/pip.conf`删除原有内容，写入以下内容
 ```
 [global]
 index-url=https://pypi.tuna.tsinghua.edu.cn/simple
