@@ -3,6 +3,7 @@
 1. Ubuntu 20.4
 2. JDK11
 3. hadoop3.2.3
+
 ### 环境安装
 
 **设置root用户密码**
@@ -12,7 +13,17 @@
 4. `vi /etc/ssh/sshd_config`
 5. 找到`PermitRootLogin`参数（约34行）和`PasswordAuthentication`参数（约58行）修改值为`yes`,去掉注释`#`。
 6. 按`Esc`，输入`:wq`，保存退出
+---
+# 注意：
+# 以下操作需要在root用户下执行，请随时检查输入光标左侧结构
 
+## root用户结构
+``` root@xxxxxxxxxx:~#```
+
+## 其他用户结构，如下方情况请输入命令`su root`并输入root用户密码
+```xxxx@xxxxxxxxxx:/$ ```
+
+---
 **换源**
 1. 备份`sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak`
 2. 编辑`vi /etc/apt/sources.list`，全部换为以下内容
@@ -68,19 +79,30 @@ trusted-host=pypi.tuna.tsinghua.edu.cn
 3. 按下`Esc`，输入`:wq`退出
 4. 更新`sudo pip3 install --upgrade pip`
 
-### Hadoop安装
 **SSH**
+1. 删除ssh`sudo apt-get remove openssh-client openssh-server`
+2. 再次安装`sudo apt-get install openssh-client openssh-server`
+3. 更新
 ```
 sudo apt-get install ssh
 sudo apt-get install pdsh
 ```
-**安装**
+9. 查看是否启用了免密登陆`ssh localhost`
+10. 设置免密登陆
+```
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+```
+### Hadoop安装
+
+**配置**
 1. 下载安装包`wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.2.3/hadoop-3.2.3.tar.gz`
 2. 进入到下载的目录，一般为/root/`cd /root/`
 3. 解压`tar -zxvf /opt/hadoop-3.2.3.tar.gz`
-4. `cd /opt/hadoop/`
-5. `vi etc/hadoop/hadoop-env.sh`
-6. 在文件最前插入一行`export JAVA_HOME=/usr/java/latest`
+4. 进入hadoop安装目录`cd /opt/hadoop/`
+5. 编辑`vi etc/hadoop/hadoop-env.sh`
+6. 在文件最前插入一行`export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64`
 7. 编辑`vi etc/hadoop/core-site.xml`，找到`<configuration>` `</configuration>`在中间插入
 ```
 <property>
@@ -88,25 +110,14 @@ sudo apt-get install pdsh
     <value>hdfs://localhost:9000</value>
 </property>
 ```
-7. 编辑`etc/hadoop/hdfs-site.xml`，找到`<configuration>` `</configuration>`在中间插入
+8. 编辑`etc/hadoop/hdfs-site.xml`，找到`<configuration>` `</configuration>`在中间插入
 ```
  <property>
     <name>dfs.replication</name>
     <value>1</value>
 </property>
 ```
-8. 查看是否启用了免密登陆`ssh localhost`
-9. 设置免密登陆
-```
-ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 0600 ~/.ssh/authorized_keys
-```
-10. 格式化HDSF`bin/hdfs namenode -format`
-11. 启用hdfs进程`sbin/start-dfs.sh`
-
-**配置YARN**
-1. 编辑`vi etc/hadoop/mapred-site.xml`，找到`<configuration>` `</configuration>`在中间插入
+9. 编辑`vi etc/hadoop/mapred-site.xml`，找到`<configuration>` `</configuration>`在中间插入
 ```
 <property>
     <name>mapreduce.framework.name</name>
@@ -117,7 +128,7 @@ chmod 0600 ~/.ssh/authorized_keys
     <value>$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value>
 </property>
 ```
-2. 编辑`vi etc/hadoop/yarn-site.xml`，找到`<configuration>` `</configuration>`在中间插入
+10. 编辑`vi etc/hadoop/yarn-site.xml`，找到`<configuration>` `</configuration>`在中间插入
 ```
 <property>
     <name>yarn.nodemanager.aux-services</name>
@@ -128,8 +139,24 @@ chmod 0600 ~/.ssh/authorized_keys
     <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_HOME,PATH,LANG,TZ,HADOOP_MAPRED_HOME</value>
 </property>
 ```
-3. 启动`sbin/start-yarn.sh`
-4. 访问外网地址:8088
+11. 新建变量
+```
+cd /
+export HADOOP_HOME=/opt/hadoop/
+export PATH=$PATH:$HADOOP_HOME/bin
+```
+12. 生效变量`source /etc/profile`
+13. 编辑`vi sbin/start-dfs.sh`和`vi sbin/stop-dfs.sh`加入内容
+```
+HDFS_DATANODE_USER=root  
+HDFS_DATANODE_SECURE_USER=hdfs  
+HDFS_NAMENODE_USER=root  
+HDFS_SECONDARYNAMENODE_USER=root 
+```
+14. 格式化HDSF`bin/hdfs namenode -format`
+15. 启用hdfs进程`sbin/start-dfs.sh`
+16. 启动yarn进程`sbin/start-yarn.sh`
+17. 访问`外网地址:8088`
 
 ### 注意：服务器关机前请关闭hdfs和yarn
 ```
