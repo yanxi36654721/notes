@@ -192,8 +192,17 @@ Ubuntu 20.04.3 LTS
 10. 将输出的`VMess-TCP-XXXXX.json`块和`链接 (URL)`块复制保存
 11. 下载链接 [window版](https://github.com/2dust/v2rayN/releases/) [安卓版](https://github.com/2dust/v2rayNG/releases/)
 
+### 3.5 aaPanel（宝塔面板国际版）
+1. ```wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && sudo bash install.sh aapanel```  
+   安装宝塔面板国际版，将输出的内容记录在本地
+2. ```wget -O aapanel_chinese.zip https://github.com/gacjie/aapanel_chinese/releases/download/6.8.27/aapanel_simplified_chinese_6827.zip```  
+   下载汉化包
+3. ```unzip -o aapanel_chinese.zip -d /www/server/```  
+   解压覆盖
+4. ```bt restart```  
+   重启面板
 
-### 3.5 搜狗输入法 
+### 3.6 搜狗输入法 
 [官方教程](https://pinyin.sogou.com/linux/help.php)
-### 3.6 deepin 
+### 3.7 deepin 
 [官方教程](https://github.com/zq1997/deepin-wine#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
