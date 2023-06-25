@@ -1,11 +1,12 @@
-# Ubuntu 20.04.3 LTS
+Ubuntu 20.04.3 LTS
+=================
+## 1. 安装
 
-## 安装
 1. 准备
    * 4GB及以上U盘
    * [Rufus](https://rufus.ie/zh/)
    * [Ubuntu ISO](https://ubuntu.com/download/desktop)
-2. 制作镜像U盘
+1. 制作镜像U盘
    
     |选项|选择|
     |:---:|:---:|
@@ -14,10 +15,10 @@
     |目标系统类型|BIOS|
     |文件系统|FAT32|
     |簇大小|16k|
-3. 启动U盘
-4. 选择第一项`Install Ubuntu`
-5. 选择语言，安装。
-6. 安装类型
+1. 启动U盘
+2. 选择第一项`Install Ubuntu`
+3. 选择语言，安装。
+4. 安装类型
    - 清空磁盘
    - 其他选项
 
@@ -27,51 +28,45 @@
         |分区类型|EFI System|Filesystem|
         |内容|FAT(32bit)|Ext4(v1.0)|
         |挂载|/boot/sfi|文件系统根目录|
-7. 创建用户名和密码，重启拔掉U盘。
-## 环境
-### 设置
-**设置root用户密码**
+5. 创建用户名和密码，重启拔掉U盘。
+---
+## 2. 环境
+### 2.1 设置root用户密码
 1. ```sudo passwd root```  
    切换root用户
-3. 设置密码，回车，重复输入确认密码
-4. ```su root```  
+2. 设置密码，回车，重复输入确认密码
+3. ```su root```  
    切换root用户，输入刚才设置的密码
-5. ```vi /etc/ssh/sshd_config```  
+4. ```vi /etc/ssh/sshd_config```  
    修改ssh配置
-6. 按`i`编辑文件
-7. 找到`#PermitRootLogin`参数和`PasswordAuthentication`参数，将属性修改为`yes`,去掉注释`#`，按`Esc`输入`:wq`保存文件。  
-
-**设置中文环境**
+5. 按`i`编辑文件
+6. 找到`#PermitRootLogin`参数和`PasswordAuthentication`参数，将属性修改为`yes`,去掉注释`#`，按`Esc`输入`:wq`保存文件。  
+  
+### 2.2 设置中文环境
 1. ```sudo apt install language-pack-zh-hans -y```  
    安装中文语言包
-2. ```vim /etc/environment```  
-     编辑语言环境变量  
-     保留原有内容，在后面粘贴下列配置
+2. ```locale-gen zh_CN.UTF-8```  
+   添加中文
+3. ```vim /etc/default/locale```  
+     编辑语言环境变量，覆盖粘贴以下内容
    ```
-    LANG=zh_CN.UTF-8
-    LANGUAGE=en_US:en
-    LC_CTYPE="zh_CN.UTF-8"
-    LC_NUMERIC="zh_CN.UTF-8"
-    LC_TIME="zh_CN.UTF-8"
-    LC_COLLATE="zh_CN.UTF-8"
-    LC_MONETARY="zh_CN.UTF-8"
-    LC_MESSAGES="zh_CN.UTF-8"
-    LC_PAPER="zh_CN.UTF-8"
-    LC_NAME="zh_CN.UTF-8"
-    LC_ADDRESS="zh_CN.UTF-8"
-    LC_TELEPHONE="zh_CN.UTF-8"
-    LC_MEASUREMENT="zh_CN.UTF-8"
-    LC_IDENTIFICATION="zh_CN.UTF-8"
-    LC_ALL=zh_CN.UTF-8
+   LANG="zh_CN.UTF-8"
+   LANGUAGE="zh_CN:zh:en_US:en"
+   LC_NUMERIC="zh_CN.UTF-8"
+   LC_TIME="zh_CN.UTF-8"
+   LC_MONETARY="zh_CN.UTF-8"
+   LC_PAPER="zh_CN.UTF-8"
+   LC_IDENTIFICATION="zh_CN.UTF-8"
+   LC_NAME="zh_CN.UTF-8"
+   LC_ADDRESS="zh_CN.UTF-8"
+   LC_TELEPHONE="zh_CN.UTF-8"
+   LC_MEASUREMENT="zh_CN.UTF-8"
+   LC_ALL=zh_CN.UTF-8
    ```
-3. 按`Esc`输入`:wq`保存文件
-4. 关闭窗口，重新登录shell，使用`root`账户登录
-5. ```source /etc/environment```  
-   使刚才添加的环境变量生效
-6. ```sudo apt install manpages-zh -y```  
-   设置控制台中文
+4. 按`Esc`输入`:wq`保存文件
+5. 断开控制台，重新连接
 
-**换源**
+### 2.3 换源
 1. ```sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak```  
    备份原文件
 2. ```vi /etc/apt/sources.list```  
@@ -93,7 +88,7 @@
 5. ```sudo apt upgrade```  
    更新 
 
-**图形化页面root用户登录**
+### 2.4 在图形化页面中使用root用户登录
 1. ```vi /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf```
 2. 修改内容   
     ```
@@ -115,8 +110,30 @@
     tty -s && mesg n || true
     mesg n || true
    ```
+---
+## 3.软件
 
-**JDK**
+### 3.1 Fail2ban
+1. ```sudo apt update```  
+   更新软件列表
+2. ```sudo apt install fail2ban```  
+   安装Fail2ban
+3. ```sudo systemctl status fail2ban```  
+   检查是否成功运行
+4. ```sudo cp /etc/fail2ban/jail.{conf,local}```  
+5. 创建个人配置文件，在有需要时修改
+   ```
+   ignoreip = 127.0.0.1/8 ::1 123.123.123.123 192.168.1.0/24  //IP白名单
+   bantime  = 10min  //禁止持续时间
+   findtime  = 10m  //失败次数持续时间
+   maxretry = 5  //失败尝试次数
+   ```
+   ```fail2ban-client set sshd unbanip xxx.xxx.xxx.xxx```  
+   删除已被限制的IP  
+   ```fail2ban-client set sshd banip xxx.xxx.xxx.xxx```  
+   禁止已被限制的IP
+
+### 3.2 JDK
 1. 安装```sudo apt install openjdk-11-jdk```
 2. 验证```java -version```
 3. 查看安装路径```sudo update-alternatives --config java```
@@ -124,7 +141,7 @@
 5. 重新配置```source /etc/environment```
 6. 验证```echo $JAVA_HOME```
 
-**pip**
+### 3.3 pip
 1. 安装pip```sudo apt-get install python3-pip```
 2. 更新```sudo pip3 install --upgrade pip```
 3. 软连接```sudo ln -s /usr/bin/pip3 /usr/bin/pip```
@@ -139,7 +156,7 @@
 6. 查看当前源```pip config list```
 7. 更新```sudo pip install --upgrade pip```
 
-**v2ray**
+### 3.4 v2ray
 1. `bash <(wget -qO- -o- https://git.io/v2ray.sh)`  
    使用一键安装脚本安装
 2. 提示如下代表安装成功
@@ -175,6 +192,8 @@
 10. 将输出的`VMess-TCP-XXXXX.json`块和`链接 (URL)`块复制保存
 11. 下载链接 [window版](https://github.com/2dust/v2rayN/releases/) [安卓版](https://github.com/2dust/v2rayNG/releases/)
 
-### 软件
-* 搜狗输入法 [官方教程](https://pinyin.sogou.com/linux/help.php)
-* deepin [官方教程](https://github.com/zq1997/deepin-wine#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
+
+### 3.5 搜狗输入法 
+[官方教程](https://pinyin.sogou.com/linux/help.php)
+### 3.6 deepin 
+[官方教程](https://github.com/zq1997/deepin-wine#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
